@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur de Bouton</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5 w-50">
+        <h1>Générateur de Bouton</h1>
+        <form id="buttonForm">
+            <div class="form-group">
+                <label for="buttonText">Texte du Bouton</label>
+                <input type="text" class="form-control" id="buttonText" placeholder="Entrez le texte du bouton">
+            </div>
+            <div class="form-group">
+                <label for="buttonLink">Lien du Bouton</label>
+                <input type="text" class="form-control" id="buttonLink" placeholder="Entrez le lien du bouton">
+            </div>
+            <div class="form-group">
+                <label for="buttonAlign">Alignement du Bouton</label>
+                <select class="form-control" id="buttonAlign">
+                    <option value="left">Gauche</option>
+                    <option value="center">Centre</option>
+                    <option value="right">Droite</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="generateButtonCode()">Générer le Code</button>
+            <input type="button" value="Effacer les champs" onclick="clearFields()" class="btn btn-danger">
+        </form>
+        <div id="codeContainer" style="display: none;">
+            <h2 class="mt-5 mb-3">Code HTML généré :</h2>
+            <pre id="generatedCode" class="my-3"></pre>
+            <button id="copyButton" class="btn btn-secondary" style="display: none;" onclick="copyToClipboard()">Copier le Code</button>
+        </div>
+    </div>
+
+    <script>
+        function generateButtonCode() {
+            const buttonText = document.getElementById("buttonText").value;
+            const buttonLink = document.getElementById("buttonLink").value;
+            const buttonAlign = document.getElementById("buttonAlign").value;
+
+            let buttonCode = `<div class="button__container" style="justify-content: ${buttonAlign}">\\n`;
+            buttonCode += `\\t<a class="button" href="${buttonLink}" target="_self" style="background-color: #ff6e5d; color: #ffffff; border: 1px solid #ffffff; align-item: ${buttonAlign} !important">${buttonText}</a>\\n`;
+            buttonCode += `</div>`;
+            
+            document.getElementById("generatedCode").innerText = buttonCode;
+
+            document.getElementById("codeContainer").style.display = "block";
+            document.getElementById("copyButton").style.display = "block";
+        }
+
+        function clearFields() {
+            document.getElementById("buttonText").value = "";
+            document.getElementById("buttonLink").value = "";
+            document.getElementById("buttonAlign").value = "left";
+            document.getElementById("codeContainer").style.display = "none";
+            document.getElementById("copyButton").style.display = "none";
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById("generatedCode").innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = copyText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            
+            document.getElementById("copyButton").textContent = "Copié!";
+        }
+    </script>
+</body>
+</html>
